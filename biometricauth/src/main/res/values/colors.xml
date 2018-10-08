@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="biometric_fingerprint_color">#1a73e8</color>
+    <color name="biometric_icon_text_color">#767676</color>
+    <color name="biometric_icon_text_color_error">#d93025</color>
+</resources>

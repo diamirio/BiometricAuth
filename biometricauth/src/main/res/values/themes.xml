@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="BiometricCancelButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="colorAccent">#FFFFFF</item>
+    </style>
+
+</resources>
