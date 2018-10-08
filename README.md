@@ -19,7 +19,7 @@ To use this library your `minSdkVersion` must be >= 15. (Note that the dialog ho
 allprojects {
     repositories {
         ...
-        maven { url 'https://jitpack.io' }
+        jcenter()
     }
 }
 
