@@ -3,13 +3,12 @@
 [ ![Download](https://api.bintray.com/packages/tailoredmedia/maven/biometricauth/images/download.svg) ](https://bintray.com/tailoredmedia/maven/biometricauth/_latestVersion)
 ![API 15](https://img.shields.io/badge/API-15-yellow.svg)
 
-This library brings the new Android P BiometricPrompt for fingerprint authentication backported to Android SDK 23 with RxJava2 (and Kotlin).
+This library brings the new Android P BiometricPrompt for fingerprint authentication to Android SDK 23, using RxJava2 (and Kotlin).
 
 
-Dialog shown on Android 23 (Marshmallow) to Android 27 (Oreo) devices on the left,
-Android Pie dialog shown on the right:
-
-![Dialog on Marshmallow devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/marshmallow.gif "Dialog shown on Android 23..27 devices")        ![Dialog on Pie devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/pie.gif "Dialog shown on Android 28 devices")
+| Android 23..27 (>= Marshmallow)  |  Android 28 (Pie) |
+| :------------------------------: | :---------------: |
+| ![Dialog on Marshmallow devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/marshmallow.gif "Dialog shown on Android 23..27 devices") | ![Dialog on Pie devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/pie.gif "Dialog shown on Android 28 devices") |
 
 
 ## Setup
@@ -20,7 +19,7 @@ To use this library your `minSdkVersion` must be >= 15 (Note that the dialog how
 allprojects {
     repositories {
         ...
-        maven { url "https://dl.bintray.com/tailoredmedia/maven/" }
+        jcenter()
     }
 }
 
@@ -41,7 +40,7 @@ val biometricAuth = BiometricAuth.create(this); // where this is an (AppCompat-)
 
 ```kotlin
 if(!biometricAuth.hasFingerprintHardware) {
-    //The devices does not support fingerprint authentication (i.e. has no fingerprint hardware):
+    //The devices does not support fingerprint authentication (i.e. has no fingerprint hardware)
     Toast.makeText(this, "Device does not support fingerprint", Toast.LENGTH_SHORT).show()
 } else if(!biometricAuth.hasFingerprintsEnrolled) {
     //The user has not enrolled any fingerprints (i.e. fingerprint authentication is not activated by the user)
@@ -85,7 +84,7 @@ The `authenticate()` function returns a [Completable](http://reactivex.io/RxJava
 
 On Android P (SDK 28) devices, the new [BiometricPrompt](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt) API is used.
 
-On Devices running Android Marshmallow to Oreo (SDK 23..27), the [FingerprintManagerCompat](https://developer.android.com/reference/android/support/v4/hardware/fingerprint/FingerprintManagerCompat) API is used in combination with a custom UI, which imitates the AndroidPie BiometricPrompt Bottom-Sheet.
+On devices running Android Marshmallow to Oreo (SDK 23..27), the [FingerprintManagerCompat](https://developer.android.com/reference/android/support/v4/hardware/fingerprint/FingerprintManagerCompat) API is used in combination with a custom UI, which imitates the AndroidPie BiometricPrompt Bottom-Sheet.
 
 On older devices, where Fingerprint Authentication is not supported by native Android SDKs, calling `hasFingerprintHardware` or `hasFingerprintsEnrolled` will always return false.
 
