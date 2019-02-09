@@ -11,6 +11,13 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
+
+        resValue "string", "library_biometricauth_libraryVersion", libraryVersion
+    }
+
+    // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
     }
 }
 
