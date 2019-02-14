@@ -5,53 +5,85 @@ import android.content.Context
 import android.support.annotation.RestrictTo
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
 import android.support.v4.os.CancellationSignal
+import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.rxkotlin.Flowables
 
+/**
+ * Manager encapsulating the [FingerprintManagerCompat] library in the _style_ of the
+ * [com.tailoredapps.biometricauth.BiometricAuth] interface, for easyness of use.
+ */
 @TargetApi(23)
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class MarshmallowAuthManager(context: Context) {
 
     private val fingerprintManagerCompat: FingerprintManagerCompat = FingerprintManagerCompat.from(context)
 
+    /**
+     * Whether the device provides hardware to verify fingerprints
+     */
     val hasFingerprintHardware: Boolean
         get() = fingerprintManagerCompat.isHardwareDetected
 
+    /**
+     * Whether the user has enrolled fingerprint-authentication (and added fingerprints) on the
+     * device.
+     */
     val hasFingerprintsEnrolled: Boolean
         get() = fingerprintManagerCompat.hasEnrolledFingerprints()
 
-    fun authenticate(cancellationSignal: CancellationSignal = CancellationSignal()): Flowable<AuthenticationEvent> {
+    /**
+     * @param cancellationSignal An (optional) [CancellationSignal] which îs passed onto the
+     * [FingerprintManagerCompat] and will be cancelled on the event of the [Flowable] being
+     * cancelled.
+     *
+     * @return a [Flowable], which starts the fingerprint-authentication flow in the background
+     * using the [FingerprintManagerCompat], provides all updates as items in the
+     * [Flowable] (wrapped as [AuthenticationEvent]) and honors the given [cancellationSignal].
+     */
+    fun authenticate(crypto: BiometricAuth.Crypto?, cancellationSignal: CancellationSignal = CancellationSignal()): Flowable<AuthenticationEvent> {
         return Flowables
                 .create<AuthenticationEvent>(BackpressureStrategy.LATEST) { emitter ->
                     emitter.setCancellable { cancellationSignal.cancel() }
 
                     fingerprintManagerCompat.authenticate(
-                            null,
+                            crypto?.toCryptoObject(),
                             0,
                             cancellationSignal,
                             object : FingerprintManagerCompat.AuthenticationCallback() {
                                 override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
                                     //error, no further callback calls
-                                    emitter.onNext(AuthenticationEvent(AuthenticationEvent.Type.ERROR, errMsgId, errString))
+                                    emitter.onNext(AuthenticationEvent.Error(errMsgId, errString))
                                 }
 
                                 override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence) {
-                                    emitter.onNext(AuthenticationEvent(AuthenticationEvent.Type.HELP, helpMsgId, helpString))
+                                    emitter.onNext(AuthenticationEvent.Help(helpMsgId, helpString))
                                 }
 
                                 override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult) {
-                                    emitter.onNext(AuthenticationEvent(AuthenticationEvent.Type.SUCCESS))
+                                    emitter.onNext(AuthenticationEvent.Success(result.cryptoObject?.let { BiometricAuth.Crypto(it) }))
                                 }
 
                                 override fun onAuthenticationFailed() {
                                     //fingerprint was detected successfully, but is e.g. not one of the saved ones
-                                    emitter.onNext(AuthenticationEvent(AuthenticationEvent.Type.FAILED))
+                                    emitter.onNext(AuthenticationEvent.Failed)
                                 }
                             },
                             null
                     )
                 }
     }
+
+
+    private fun BiometricAuth.Crypto.toCryptoObject(): FingerprintManagerCompat.CryptoObject? {
+        return when {
+            this.signature != null -> FingerprintManagerCompat.CryptoObject(this.signature)
+            this.cipher != null -> FingerprintManagerCompat.CryptoObject(this.cipher)
+            this.mac != null -> FingerprintManagerCompat.CryptoObject(this.mac)
+            else -> null
+        }
+    }
+
 }

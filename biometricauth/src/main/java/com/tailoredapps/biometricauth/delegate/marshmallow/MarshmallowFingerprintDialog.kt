@@ -8,7 +8,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.support.annotation.RestrictTo
 import android.support.annotation.StyleRes
-import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
@@ -25,13 +24,14 @@ import android.view.animation.RotateAnimation
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
 import com.tailoredapps.biometricauth.R
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.Completable
-import io.reactivex.CompletableEmitter
 import io.reactivex.Flowable
+import io.reactivex.MaybeEmitter
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -45,13 +45,14 @@ import kotlin.math.roundToInt
 class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
 
     companion object {
-        fun create(title: CharSequence, subtitle: CharSequence?, description: CharSequence?,
-                   negativeButtonText: CharSequence,
+        fun create(crypto: BiometricAuth.Crypto?, title: CharSequence, subtitle: CharSequence?,
+                   description: CharSequence?, negativeButtonText: CharSequence,
                    prompt: CharSequence, notRecognizedErrorText: CharSequence,
                    requestId: Int): MarshmallowFingerprintDialog {
             return MarshmallowFingerprintDialog().apply {
                 arguments = Bundle().apply {
                     putInt(EXTRA_REQUEST_ID, requestId)
+                    crypto?.let { putSerializable(EXTRA_CRYPTO, it) }
                     putCharSequence(EXTRA_TITLE, title)
                     putCharSequence(EXTRA_SUBTITLE, subtitle)
                     putCharSequence(EXTRA_DESCRIPTION, description)
@@ -69,6 +70,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
         private const val EXTRA_NEGATIVE = "negative"
         private const val EXTRA_PROMPT = "prompt"
         private const val EXTRA_NOT_RECOGNIZED = "not_recognized"
+        private const val EXTRA_CRYPTO = "crypto"
     }
 
     private lateinit var title: TextView
@@ -79,7 +81,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
     private lateinit var iconTextView: TextView
     private lateinit var cancelButton: Button
 
-    private inline val emitter: CompletableEmitter?
+    private inline val emitter: MaybeEmitter<BiometricAuth.Crypto>?
         get() = arguments?.getInt(EXTRA_REQUEST_ID)?.let { MarshmallowBiometricAuth.getEmitter(it) }
 
     private lateinit var cancellationSignal: CancellationSignal
@@ -135,12 +137,13 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
 
         dialog.setOnShowListener { _ ->
             sheetView?.height?.let { height -> behavior?.peekHeight = height }
-            authManager.authenticate(cancellationSignal)
+            authManager.authenticate(arguments?.getSerializable(EXTRA_CRYPTO) as? BiometricAuth.Crypto, cancellationSignal)
                     .observeOn(AndroidSchedulers.mainThread())
                     .delegateErrorOutputToViewOnNext()
-                    .filter { event -> event.type == AuthenticationEvent.Type.SUCCESS || event.type == AuthenticationEvent.Type.ERROR }
+                    .filter { event -> event is AuthenticationEvent.Success || event is AuthenticationEvent.Error }
                     .switchMapSingle { event ->
-                        if (event.type == AuthenticationEvent.Type.ERROR) {
+                        if (event is AuthenticationEvent.Error) {
+                            //delay error to have the error-text shown in the bottom sheet for some while to the user
                             Single.timer(2, TimeUnit.SECONDS).map { event }
                         } else {
                             Single.just(event)
@@ -149,17 +152,22 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                     .firstElement()
                     .subscribe(
                             { event ->
-                                if (event.type == AuthenticationEvent.Type.SUCCESS) {
+                                if (event is AuthenticationEvent.Success) {
                                     emitter?.onComplete()
-                                } else {
+                                } else if (event is AuthenticationEvent.Error) {
                                     if (event.messageId == 5) {  //"Fingerprint operation cancelled."
                                         emitter?.onCancel()
                                     } else {
                                         emitter?.onError(BiometricAuthenticationException(
-                                                errorMessageId = event.messageId ?: 0,
-                                                errorString = event.string ?: ""
+                                                errorMessageId = event.messageId,
+                                                errorString = event.message
                                         ))
                                     }
+                                } else {
+                                    emitter?.onError(BiometricAuthenticationException(
+                                            errorMessageId = 0,
+                                            errorString = ""
+                                    ))
                                 }
                                 dismissAllowingStateLoss()
                             },
@@ -186,17 +194,17 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
      */
     private fun Flowable<AuthenticationEvent>.delegateErrorOutputToViewOnNext(): Flowable<AuthenticationEvent> {
         return this.doOnNext { event ->
-            when (event.type) {
-                AuthenticationEvent.Type.ERROR -> {
-                    showError(event.string!!)
+            when (event) {
+                is AuthenticationEvent.Error -> {
+                    showError(event.message)
                 }
-                AuthenticationEvent.Type.HELP -> {
-                    showError(event.string!!)
+                is AuthenticationEvent.Help -> {
+                    showError(event.message)
                 }
-                AuthenticationEvent.Type.FAILED -> {
+                is AuthenticationEvent.Failed -> {
                     showError(arguments?.getCharSequence(EXTRA_NOT_RECOGNIZED) ?: "Not recognized")
                 }
-                AuthenticationEvent.Type.SUCCESS -> {
+                is AuthenticationEvent.Success -> {
                 }
             }
         }
@@ -338,7 +346,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
         super.onDestroy()
     }
 
-    private fun CompletableEmitter.onCancel() = this.onError(BiometricAuthenticationCancelledException())
+    private fun MaybeEmitter<BiometricAuth.Crypto>.onCancel() = this.onError(BiometricAuthenticationCancelledException())
 
 
     /**
@@ -359,10 +367,6 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                 window?.setLayout(fixedLandscapeWidthInDp.dpAsPixel, WindowManager.LayoutParams.WRAP_CONTENT)
             }
         }
-
-//        override fun <T : View?> findViewById(id: Int): T? {
-//            return super.findViewById<T>(id) ?: throw KotlinNullPointerException("findViewById($id) is null")
-//        }
 
     }
 
