@@ -27,7 +27,7 @@ sealed class AuthenticationEvent {
             /**
              * The id of the message, if set.
              *
-             * See [BiometricPromptConstants] for possible values.
+             * See [com.tailoredapps.biometricauth.BiometricConstants.Error] for possible values.
              */
             val messageId: Int,
             val message: CharSequence
@@ -50,7 +50,7 @@ sealed class AuthenticationEvent {
             /**
              * The id of the message, if set.
              *
-             * See [BiometricPromptConstants] for possible values.
+             * See [com.tailoredapps.biometricauth.BiometricConstants.Help] for possible values.
              */
             val messageId: Int,
             val message: CharSequence

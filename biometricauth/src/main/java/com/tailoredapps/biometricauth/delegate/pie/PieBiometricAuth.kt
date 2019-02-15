@@ -10,7 +10,7 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
 import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
-import com.tailoredapps.biometricauth.Constants
+import com.tailoredapps.biometricauth.BiometricConstants
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.*
 import io.reactivex.rxkotlin.Flowables
@@ -124,7 +124,7 @@ class PieBiometricAuth(private val context: Context) : BiometricAuth {
     private fun getAuthenticationCallbackForFlowableEmitter(emitter: FlowableEmitter<AuthenticationEvent>): BiometricPrompt.AuthenticationCallback {
         return object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                if (errorCode == Constants.Error.USER_CANCELED) {
+                if (errorCode == BiometricConstants.Error.USER_CANCELED) {
                     //on the event of user cancelled, do not propagate the original error
                     emitter.onError(BiometricAuthenticationCancelledException())
                 } else {

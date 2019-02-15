@@ -4,7 +4,7 @@ import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 
 /**
  * Constant fields which may be present in [AuthenticationEvent.Error] or [AuthenticationEvent.Help]
- * callbacks as `messageId` (or in further perspective the [Constants.Error] fields as in
+ * callbacks as `messageId` (or in further perspective the [BiometricConstants.Error] fields as in
  * [BiometricAuthenticationException]).
  *
  * Source:
@@ -15,7 +15,7 @@ import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
  *
  * (not referencing directly, as classes are hidden.)
  */
-object Constants {
+object BiometricConstants {
 
     /**
      * Error messages from biometric hardware during initialization, enrollment, authentication or

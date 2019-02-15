@@ -61,9 +61,11 @@ if(!biometricAuth.hasFingerprintHardware) {
                     if(throwable is BiometricAuthenticationCancelledException) {
                         Log.d("BiometricAuth", "User cancelled the operation")
                     } else if(throwable is BiometricAuthenticationException) {
+                        // Might want to check throwable.errorMessageId for fields in BiometricConstants.Error,
+                        // to get more information about the error / further actions here.
                         Log.d("BiometricAuth", "Unrecoverable authentication error")
                     } else {
-                        Log.d("BiometricAuth", "Error during user authentication.", it)
+                        Log.d("BiometricAuth", "Error during user authentication.")
                     }
                 }
         )
@@ -74,10 +76,16 @@ The `authenticate()` function returns a [Completable](http://reactivex.io/RxJava
 
 * completes, which indicates an authentication success, or
 * emits an error:
-  * `BiometricAuthenticationCancelledException`, which signals that the operation has been cancelled (most likely triggered by the user).
-  * `BiometricAuthenticationException`, which signals an unrecoverable error during biometric authentication (e.g. too many invalid attempts). The exception contains the localized error-message provided by the system.
+  * [`BiometricAuthenticationCancelledException`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/Exceptions.kt), which signals that the operation has been cancelled (most likely triggered by the user).
+  * [`BiometricAuthenticationException`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/Exceptions.kt), which signals an unrecoverable error during biometric authentication (e.g. too many invalid attempts).
+    The exception contains the localized error-message provided by the system.
+    Furthermore, the errorMessageId contained in this exception is most likely one of the fields in [`BiometricConstants.Error`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/BiometricConstants.kt) (but no exclusively), which allows to get more information on the type or error.
   * any other _unexpected_ error during authentication (Not any of the *internal* fingerprint errors like "not detected", as they will be handled internally).
 
+
+### CryptoObject
+
+If you need to pass a crypto-object, add a `BiometricAuth.CryptoObject` as a first parameter to the `BiometricAuth.authenticate` method, which will then return a [Single](http://reactivex.io/RxJava/javadoc/io/reactivex/Single.html) including the CryptoObject as a success-value.
 
 
 ## What's inside?
