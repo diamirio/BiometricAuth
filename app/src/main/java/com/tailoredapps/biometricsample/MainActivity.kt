@@ -25,17 +25,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
-            biometricAuth.testAuthenticate()
+            testAuthenticate()
         }
     }
 
-    private fun BiometricAuth.testAuthenticate() {
-        if (this.hasFingerprintHardware.not()) {
+    private fun testAuthenticate() {
+        if (biometricAuth.hasFingerprintHardware.not()) {
             Toast.makeText(this@MainActivity, "Devices provides no fingerprint hardware", Toast.LENGTH_SHORT).show()
-        } else if (this.hasFingerprintsEnrolled.not()) {
+        } else if (biometricAuth.hasFingerprintsEnrolled.not()) {
             Toast.makeText(this@MainActivity, "No fingerprints enrolled", Toast.LENGTH_SHORT).show()
         } else {
-            this.authenticate(
+            biometricAuth.authenticate(
                     title = "Please authenticate",
                     subtitle = "Using 'Awesome Feature' requires your authentication.",
                     description = "'Awesome Feature' exposes data private to you, which is why you need to authenticate.",

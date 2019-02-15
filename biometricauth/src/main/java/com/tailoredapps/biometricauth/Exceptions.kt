@@ -6,6 +6,11 @@ package com.tailoredapps.biometricauth
  *
  * The BottomSheet will show the provided [errorString] and will after some time close the dialog.
  *
+ * You might want to check the [errorMessageId] with the values set in [BiometricConstants.Error] object,
+ * which represent the values which may be set there.
+ * Note, however, that the list of fields in the [BiometricConstants.Error] object is not exhaustive, which
+ * means that other (vendor-specific) values may be present in [errorMessageId].
+ *
  * @param errorMessageId The messageId of the error
  * @param errorString The (localized) string of the error
  */
