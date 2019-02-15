@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun testAuthenticate() {
         if (biometricAuth.hasFingerprintHardware.not()) {
-            Toast.makeText(this@MainActivity, "Devices provides no fingerprint hardware", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Devices provides no fingerprint hardware", Toast.LENGTH_SHORT).show()
         } else if (biometricAuth.hasFingerprintsEnrolled.not()) {
-            Toast.makeText(this@MainActivity, "No fingerprints enrolled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No fingerprints enrolled", Toast.LENGTH_SHORT).show()
         } else {
             biometricAuth.authenticate(
                     title = "Please authenticate",
@@ -46,17 +46,17 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-                                Toast.makeText(this@MainActivity, "Success!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
                                 Log.d(LOG_TAG, "onSuccess()")
                             },
                             { throwable ->
                                 when (throwable) {
                                     is BiometricAuthenticationException -> {
-                                        Toast.makeText(this@MainActivity, "Error: ${throwable.errorString}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Error: ${throwable.errorString}", Toast.LENGTH_SHORT).show()
                                         Log.e(LOG_TAG, "BiometricAuthenticationException(${throwable.errorMessageId}, '${throwable.errorString}')", throwable)
                                     }
                                     is BiometricAuthenticationCancelledException -> {
-                                        Toast.makeText(this@MainActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
                                         Log.d(LOG_TAG, "onError(BiometricAuthenticationCancelledException)")
                                     }
                                     else -> Log.e(LOG_TAG, "onError()", throwable)
