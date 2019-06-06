@@ -15,7 +15,7 @@ ext {
     siteUrl = 'https://github.com/tailoredmedia/BiometricAuth'
     gitUrl = 'https://github.com/tailoredmedia/BiometricAuth.git'
 
-    libraryVersion = '1.1.0'
+    libraryVersion = '1.1.1'
 
     developerId = 'tailoredmedia'
     developerName = 'Tailored Apps'
