@@ -153,7 +153,11 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                     .subscribe(
                             { event ->
                                 if (event is AuthenticationEvent.Success) {
-                                    emitter?.onComplete()
+                                    if(event.crypto != null) {
+                                        emitter?.onSuccess(event.crypto)
+                                    } else {
+                                        emitter?.onComplete()
+                                    }
                                 } else if (event is AuthenticationEvent.Error) {
                                     if (event.messageId == 5) {  //"Fingerprint operation cancelled."
                                         emitter?.onCancel()
