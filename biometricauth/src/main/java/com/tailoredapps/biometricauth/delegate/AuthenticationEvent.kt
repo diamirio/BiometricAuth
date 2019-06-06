@@ -62,6 +62,8 @@ sealed class AuthenticationEvent {
      *
      * This event signals the end of the process, as the authentication has succeeded.
      * No further events will be sent.
+     *
+     * @param crypto The crypto-object, if set in the request
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     data class Success(
