@@ -123,21 +123,21 @@ class PieBiometricAuth(private val context: Context) : BiometricAuth {
 
     private fun getAuthenticationCallbackForFlowableEmitter(emitter: FlowableEmitter<AuthenticationEvent>): BiometricPrompt.AuthenticationCallback {
         return object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
                 if (errorCode == BiometricConstants.Error.USER_CANCELED) {
                     //on the event of user cancelled, do not propagate the original error
                     emitter.onError(BiometricAuthenticationCancelledException())
                 } else {
-                    emitter.onNext(AuthenticationEvent.Error(errorCode, errString))
+                    emitter.onNext(AuthenticationEvent.Error(errorCode, errString ?: ""))
                 }
             }
 
-            override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
-                emitter.onNext(AuthenticationEvent.Help(helpCode, helpString))
+            override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence?) {
+                emitter.onNext(AuthenticationEvent.Help(helpCode, helpString ?: ""))
             }
 
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                emitter.onNext(AuthenticationEvent.Success(result.cryptoObject?.let { BiometricAuth.Crypto(it) }))
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
+                emitter.onNext(AuthenticationEvent.Success(result?.cryptoObject?.let { BiometricAuth.Crypto(it) }))
             }
 
             override fun onAuthenticationFailed() {
