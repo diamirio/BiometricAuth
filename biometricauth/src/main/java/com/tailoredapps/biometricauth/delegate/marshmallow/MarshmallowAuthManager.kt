@@ -53,17 +53,17 @@ class MarshmallowAuthManager(context: Context) {
                             0,
                             cancellationSignal,
                             object : FingerprintManagerCompat.AuthenticationCallback() {
-                                override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
+                                override fun onAuthenticationError(errMsgId: Int, errString: CharSequence?) {
                                     //error, no further callback calls
-                                    emitter.onNext(AuthenticationEvent.Error(errMsgId, errString))
+                                    emitter.onNext(AuthenticationEvent.Error(errMsgId, errString ?: ""))
                                 }
 
-                                override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence) {
-                                    emitter.onNext(AuthenticationEvent.Help(helpMsgId, helpString))
+                                override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence?) {
+                                    emitter.onNext(AuthenticationEvent.Help(helpMsgId, helpString ?: ""))
                                 }
 
-                                override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult) {
-                                    emitter.onNext(AuthenticationEvent.Success(result.cryptoObject?.let { BiometricAuth.Crypto(it) }))
+                                override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
+                                    emitter.onNext(AuthenticationEvent.Success(result?.cryptoObject?.let { BiometricAuth.Crypto(it) }))
                                 }
 
                                 override fun onAuthenticationFailed() {
