@@ -153,16 +153,19 @@ interface BiometricAuth {
         /**
          * Wrap a [Signature] to be sent to the biometric authentication
          */
+        @Suppress("unused")
         constructor(signature: Signature) : this(signature, null, null)
 
         /**
          * Wrap a [Cipher] to be sent to the biometric authentication
          */
+        @Suppress("unused")
         constructor(cipher: Cipher) : this(null, cipher, null)
 
         /**
          * Wrap a [Mac] to be sent to the biometric authentication
          */
+        @Suppress("unused")
         constructor(mac: Mac) : this(null, null, mac)
 
 
