@@ -79,7 +79,7 @@ The `authenticate()` function returns a [Completable](http://reactivex.io/RxJava
   * [`BiometricAuthenticationCancelledException`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/Exceptions.kt), which signals that the operation has been cancelled (most likely triggered by the user).
   * [`BiometricAuthenticationException`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/Exceptions.kt), which signals an unrecoverable error during biometric authentication (e.g. too many invalid attempts).
     The exception contains the localized error-message provided by the system.
-    Furthermore, the errorMessageId contained in this exception is most likely one of the fields in [`BiometricConstants.Error`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/BiometricConstants.kt) (but no exclusively), which allows to get more information on the type or error.
+    Furthermore, the errorMessageId contained in this exception is most likely one of the fields in [`BiometricConstants.Error`](https://github.com/tailoredmedia/BiometricAuth/blob/master/biometricauth/src/main/java/com/tailoredapps/biometricauth/BiometricConstants.kt) (but not exclusively), which allows to get more information on the type or error.
   * any other _unexpected_ error during authentication (Not any of the *internal* fingerprint errors like "not detected", as they will be handled internally).
 
 
