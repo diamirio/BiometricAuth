@@ -36,7 +36,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.addTo
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -153,7 +152,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                     .subscribe(
                             { event ->
                                 if (event is AuthenticationEvent.Success) {
-                                    if(event.crypto != null) {
+                                    if (event.crypto != null) {
                                         emitter?.onSuccess(event.crypto)
                                     } else {
                                         emitter?.onComplete()
@@ -177,7 +176,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                             },
                             { throwable -> emitter?.onError(throwable) }
                     )
-                    .addTo(compositeDisposable)
+                    .let(compositeDisposable::add)
         }
 
         return dialog
@@ -330,7 +329,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
                 )
                 // Also add this disposable to the compositeDisposable,
                 // as this e.g. is the only one being cleared at onDestroy)
-                .addTo(compositeDisposable)
+                .also { compositeDisposable.add(it) }
     }
 
     override fun onCancel(dialog: DialogInterface?) {

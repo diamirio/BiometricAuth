@@ -13,7 +13,6 @@ import com.tailoredapps.biometricauth.BiometricAuthenticationException
 import com.tailoredapps.biometricauth.BiometricConstants
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.*
-import io.reactivex.rxkotlin.Flowables
 import java.util.concurrent.Executor
 
 @TargetApi(28)
@@ -32,8 +31,8 @@ class PieBiometricAuth(private val context: Context) : BiometricAuth {
     private fun internalAuthenticate(cryptoObject: BiometricAuth.Crypto?, title: CharSequence,
                                      subtitle: CharSequence?, description: CharSequence?,
                                      negativeButtonText: CharSequence): Maybe<BiometricAuth.Crypto> {
-        return Flowables
-                .create<AuthenticationEvent>(BackpressureStrategy.LATEST) { emitter ->
+        return Flowable
+                .create<AuthenticationEvent>({ emitter ->
                     val executor = Executor { it.run() }
 
                     val cancellationSignal = CancellationSignal()
@@ -68,7 +67,7 @@ class PieBiometricAuth(private val context: Context) : BiometricAuth {
                                 getAuthenticationCallbackForFlowableEmitter(emitter)
                         )
                     }
-                }
+                }, BackpressureStrategy.LATEST)
                 .filter { event -> event is AuthenticationEvent.Success || event is AuthenticationEvent.Error }
                 .firstOrError()
                 .onErrorResumeNext { throwable ->
