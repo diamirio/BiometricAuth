@@ -9,7 +9,6 @@ import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.rxkotlin.Flowables
 
 /**
  * Manager encapsulating the [FingerprintManagerCompat] library in the _style_ of the
@@ -44,8 +43,8 @@ class MarshmallowAuthManager(context: Context) {
      * [Flowable] (wrapped as [AuthenticationEvent]) and honors the given [cancellationSignal].
      */
     fun authenticate(crypto: BiometricAuth.Crypto?, cancellationSignal: CancellationSignal = CancellationSignal()): Flowable<AuthenticationEvent> {
-        return Flowables
-                .create<AuthenticationEvent>(BackpressureStrategy.LATEST) { emitter ->
+        return Flowable
+                .create<AuthenticationEvent>({ emitter ->
                     emitter.setCancellable { cancellationSignal.cancel() }
 
                     fingerprintManagerCompat.authenticate(
@@ -73,7 +72,7 @@ class MarshmallowAuthManager(context: Context) {
                             },
                             null
                     )
-                }
+                }, BackpressureStrategy.LATEST)
     }
 
 
