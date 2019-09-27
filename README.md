@@ -6,9 +6,9 @@
 This library brings the new Android P BiometricPrompt for fingerprint authentication to Android SDK 23, using RxJava2 (and Kotlin).
 
 
-| Android 23..27 (>= Marshmallow)  |  Android 28 (Pie) |
-| :------------------------------: | :---------------: |
-| ![Dialog on Marshmallow devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/marshmallow.gif "Dialog shown on Android 23..27 devices") | ![Dialog on Pie devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/pie.gif "Dialog shown on Android 28 devices") |
+| Android 23..27 (>= Marshmallow)  |  Android >= 28 (Pie, Q) |
+| :------------------------------: | :---------------------: |
+| ![Dialog on Marshmallow devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/marshmallow.gif "Dialog shown on Android 23..27 devices") | ![Dialog on Pie devices](https://github.com/tailoredmedia/BiometricAuth/raw/master/screenshots/pie.gif "Dialog shown on Android >= 28 devices") |
 
 
 ## Setup
@@ -90,7 +90,7 @@ If you need to pass a crypto-object, add a `BiometricAuth.CryptoObject` as a fir
 
 ## What's inside?
 
-On Android P (SDK 28) devices, the new [BiometricPrompt](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt) API is used.
+On Android P/Q (SDK >= 28) devices, the new [BiometricPrompt](https://developer.android.com/reference/android/hardware/biometrics/BiometricPrompt) API is used.
 
 On devices running Android Marshmallow to Oreo (SDK 23..27), the [FingerprintManagerCompat](https://developer.android.com/reference/android/support/v4/hardware/fingerprint/FingerprintManagerCompat) API is used in combination with a custom UI, which imitates the AndroidPie BiometricPrompt Bottom-Sheet.
 
