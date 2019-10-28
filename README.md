@@ -24,7 +24,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.tailoredapps:biometricauth:1.1.4'
+    implementation 'com.tailoredapps:biometricauth:1.1.5'
 }
 ```
 
