@@ -24,9 +24,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  api 'androidx.appcompat:appcompat:1.1.0'
-  api 'com.google.android.material:material:1.1.0'
-  api 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'com.google.android.material:material:1.1.0'
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
 
 
     api 'io.reactivex.rxjava2:rxjava:2.2.19'
@@ -112,7 +112,7 @@ artifacts {
 Properties properties = new Properties()
 try {
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
-} catch(IOException e) {
+} catch (IOException e) {
     println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
 }
 
