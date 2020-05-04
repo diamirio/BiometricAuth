@@ -28,6 +28,8 @@ dependencies {
 }
 ```
 
+Starting with version `1.2.0`, this library depends on androidx.
+
 
 ## Usage
 
