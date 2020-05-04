@@ -143,6 +143,10 @@ interface BiometricAuth {
      *
      * As per the native API implementation, its only possible to pass on of the three options onto
      * the algorithm, which represents the three public constructors of this class.
+     *
+     * @param signature A signature to pass on to the biometric authentication
+     * @param cipher A cipher to pass on to the biometric authentication
+     * @param mac A mac to pass on to the biometric authentication
      */
     data class Crypto internal constructor(
             val signature: Signature?,
