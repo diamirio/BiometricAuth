@@ -2,10 +2,10 @@ package com.tailoredapps.biometricauth
 
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.annotation.RestrictTo
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.RequiresApi
+import androidx.annotation.RestrictTo
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.tailoredapps.biometricauth.delegate.legacy.LegacyBiometricAuth
 import com.tailoredapps.biometricauth.delegate.marshmallow.MarshmallowBiometricAuth
 import com.tailoredapps.biometricauth.delegate.pie.PieBiometricAuth

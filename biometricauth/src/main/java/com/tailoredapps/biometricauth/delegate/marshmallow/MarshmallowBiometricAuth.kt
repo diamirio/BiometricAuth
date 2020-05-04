@@ -1,8 +1,8 @@
 package com.tailoredapps.biometricauth.delegate.marshmallow
 
 import android.annotation.TargetApi
-import android.support.annotation.RestrictTo
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.RestrictTo
+import androidx.appcompat.app.AppCompatActivity
 import com.tailoredapps.biometricauth.BiometricAuth
 import io.reactivex.*
 import java.lang.ref.WeakReference

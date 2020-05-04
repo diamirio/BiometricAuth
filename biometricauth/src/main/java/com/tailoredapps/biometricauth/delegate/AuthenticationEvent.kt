@@ -1,6 +1,6 @@
 package com.tailoredapps.biometricauth.delegate
 
-import android.support.annotation.RestrictTo
+import androidx.annotation.RestrictTo
 import com.tailoredapps.biometricauth.BiometricAuth
 
 

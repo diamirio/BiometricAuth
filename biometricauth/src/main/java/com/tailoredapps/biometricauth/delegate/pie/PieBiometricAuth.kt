@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
-import android.support.annotation.RestrictTo
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
+import androidx.annotation.RestrictTo
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException

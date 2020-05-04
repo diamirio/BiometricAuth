@@ -2,9 +2,9 @@ package com.tailoredapps.biometricauth.delegate.marshmallow
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.support.annotation.RestrictTo
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
-import android.support.v4.os.CancellationSignal
+import androidx.annotation.RestrictTo
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import androidx.core.os.CancellationSignal
 import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
 import io.reactivex.BackpressureStrategy
