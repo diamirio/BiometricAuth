@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val biometricAuth: BiometricAuth by lazy {
-        BiometricAuth.create(this)
+        BiometricAuth.create(this, useAndroidXBiometricPrompt = false)
     }
 
     private val btnAuthenticate: Button by lazy { findViewById<Button>(R.id.btn_authenticate) }
