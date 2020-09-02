@@ -40,32 +40,15 @@ interface BiometricAuth {
          * Create a [BiometricAuth] instance targeting the devices' version-code (taken from [Build.VERSION.SDK_INT]).
          *
          * @param activity the current activity (as [AppCompatActivity]) which requests the authentication.
-         *
-         * @return an instance of [BiometricAuth], which targets the devices' SDK version.
-         */
-        fun create(activity: AppCompatActivity): BiometricAuth {
-            val versionCode = Build.VERSION.SDK_INT
-            return when {
-                versionCode >= Build.VERSION_CODES.P -> PieBiometricAuth(activity)
-                versionCode >= Build.VERSION_CODES.M -> MarshmallowBiometricAuth(activity)
-                else -> LegacyBiometricAuth()
-            }
-        }
-
-        /**
-         * Create a [BiometricAuth] instance targeting the devices' version-code (taken from [Build.VERSION.SDK_INT]).
-         *
-         * @param activity the current activity (as [AppCompatActivity]) which requests the
-         * authentication.
          * @param useAndroidXBiometricPrompt Whether on pre android 10 devices the [AndroidXBiometricAuth]
          * should be used in favor of the custom implementation [MarshmallowBiometricAuth].
          * The main difference here is, that the backport is not necessarily shown as
-         * bottom-navigation-sheet, whereas the [MarshmallowBiometricAuth] is always shown as a
-         * bottom-sheet.
+         * bottom-sheet-dialog, whereas the [MarshmallowBiometricAuth] is always shown as a
+         * bottom-sheet-dialog.
          *
          * @return an instance of [BiometricAuth], which targets the devices' SDK version.
          */
-        fun create(activity: AppCompatActivity, useAndroidXBiometricPrompt: Boolean): BiometricAuth {
+        fun create(activity: AppCompatActivity, useAndroidXBiometricPrompt: Boolean = false): BiometricAuth {
             val versionCode = Build.VERSION.SDK_INT
             return when {
                 versionCode >= Build.VERSION_CODES.P -> PieBiometricAuth(activity)
