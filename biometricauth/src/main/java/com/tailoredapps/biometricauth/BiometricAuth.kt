@@ -37,6 +37,17 @@ interface BiometricAuth {
     companion object {
 
         /**
+         * **Deprecated**: Use the method with the optional Boolean parameter 'useAndroidXBiometricPrompt'.
+         */
+        @Deprecated(
+                message = "This method is solely kept for binary compatibility reasons. Use create() with two parameters instead.",
+                replaceWith = ReplaceWith("BiometricAuth.create(activity, useAndroidXBiometricPrompt = false)")
+        )
+        fun create(activity: AppCompatActivity): BiometricAuth {
+            return create(activity = activity, useAndroidXBiometricPrompt = false)
+        }
+
+        /**
          * Create a [BiometricAuth] instance targeting the devices' version-code (taken from [Build.VERSION.SDK_INT]).
          *
          * @param activity the current activity (as [AppCompatActivity]) which requests the authentication.
