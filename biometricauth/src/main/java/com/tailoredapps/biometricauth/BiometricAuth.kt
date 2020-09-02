@@ -47,7 +47,7 @@ interface BiometricAuth {
             val versionCode = Build.VERSION.SDK_INT
             return when {
                 versionCode >= Build.VERSION_CODES.P -> PieBiometricAuth(activity)
-                versionCode >= Build.VERSION_CODES.M ->  MarshmallowBiometricAuth(activity)
+                versionCode >= Build.VERSION_CODES.M -> MarshmallowBiometricAuth(activity)
                 else -> LegacyBiometricAuth()
             }
         }
