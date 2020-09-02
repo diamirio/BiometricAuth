@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import androidx.fragment.app.FragmentActivity
 import com.tailoredapps.biometricauth.delegate.androidxlegacy.AndroidXBiometricAuth
 import com.tailoredapps.biometricauth.delegate.legacy.LegacyBiometricAuth
 import com.tailoredapps.biometricauth.delegate.marshmallow.MarshmallowBiometricAuth
@@ -40,7 +41,7 @@ interface BiometricAuth {
          * **Deprecated**: Use the method with the optional Boolean parameter 'useAndroidXBiometricPrompt'.
          */
         @Deprecated(
-                message = "This method is solely kept for binary compatibility reasons. Use create() with two parameters instead.",
+                message = "This method is solely kept for binary compatibility reasons. Use create() with two parameters (FragmentActivity, Boolean) instead.",
                 replaceWith = ReplaceWith("BiometricAuth.create(activity, useAndroidXBiometricPrompt = false)")
         )
         fun create(activity: AppCompatActivity): BiometricAuth {
@@ -59,7 +60,7 @@ interface BiometricAuth {
          *
          * @return an instance of [BiometricAuth], which targets the devices' SDK version.
          */
-        fun create(activity: AppCompatActivity, useAndroidXBiometricPrompt: Boolean = false): BiometricAuth {
+        fun create(activity: FragmentActivity, useAndroidXBiometricPrompt: Boolean = false): BiometricAuth {
             val versionCode = Build.VERSION.SDK_INT
             return when {
                 versionCode >= Build.VERSION_CODES.P -> PieBiometricAuth(activity)

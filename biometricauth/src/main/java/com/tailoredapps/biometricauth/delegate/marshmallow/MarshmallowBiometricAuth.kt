@@ -2,7 +2,7 @@ package com.tailoredapps.biometricauth.delegate.marshmallow
 
 import android.annotation.TargetApi
 import androidx.annotation.RestrictTo
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.tailoredapps.biometricauth.BiometricAuth
 import io.reactivex.*
 import java.lang.ref.WeakReference
@@ -10,7 +10,7 @@ import java.security.SecureRandom
 
 @TargetApi(23)
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class MarshmallowBiometricAuth(private val activity: AppCompatActivity) : BiometricAuth {
+class MarshmallowBiometricAuth(private val activity: FragmentActivity) : BiometricAuth {
 
     companion object {
         private val random = SecureRandom()

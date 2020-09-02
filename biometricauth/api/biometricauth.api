@@ -8,8 +8,8 @@ public abstract interface class com/tailoredapps/biometricauth/BiometricAuth {
 
 public final class com/tailoredapps/biometricauth/BiometricAuth$Companion {
 	public final fun create (Landroidx/appcompat/app/AppCompatActivity;)Lcom/tailoredapps/biometricauth/BiometricAuth;
-	public final fun create (Landroidx/appcompat/app/AppCompatActivity;Z)Lcom/tailoredapps/biometricauth/BiometricAuth;
-	public static synthetic fun create$default (Lcom/tailoredapps/biometricauth/BiometricAuth$Companion;Landroidx/appcompat/app/AppCompatActivity;ZILjava/lang/Object;)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public final fun create (Landroidx/fragment/app/FragmentActivity;Z)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public static synthetic fun create$default (Lcom/tailoredapps/biometricauth/BiometricAuth$Companion;Landroidx/fragment/app/FragmentActivity;ZILjava/lang/Object;)Lcom/tailoredapps/biometricauth/BiometricAuth;
 }
 
 public final class com/tailoredapps/biometricauth/BiometricAuth$Crypto : java/io/Serializable {
@@ -138,7 +138,7 @@ public final class com/tailoredapps/biometricauth/delegate/marshmallow/Marshmall
 
 public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowBiometricAuth : com/tailoredapps/biometricauth/BiometricAuth {
 	public static final field Companion Lcom/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowBiometricAuth$Companion;
-	public fun <init> (Landroidx/appcompat/app/AppCompatActivity;)V
+	public fun <init> (Landroidx/fragment/app/FragmentActivity;)V
 	public fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/Single;
 	public fun authenticate (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/Completable;
 	public fun getHasFingerprintHardware ()Z
