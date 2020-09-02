@@ -37,7 +37,7 @@ Starting with version `1.2.0`, this library depends on androidx.
 Create a `BiometricAuth` instance:
 
 ```kotlin
-val biometricAuth = BiometricAuth.create(this); // where this is an (AppCompat-)Activity
+val biometricAuth = BiometricAuth.create(this, useAndroidXBiometricPrompt = false) // where this is an (AppCompat-)Activity
 ```
 
 ```kotlin
