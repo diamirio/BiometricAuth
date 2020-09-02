@@ -8,10 +8,13 @@ public abstract interface class com/tailoredapps/biometricauth/BiometricAuth {
 
 public final class com/tailoredapps/biometricauth/BiometricAuth$Companion {
 	public final fun create (Landroidx/appcompat/app/AppCompatActivity;)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public final fun create (Landroidx/appcompat/app/AppCompatActivity;Z)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public static synthetic fun create$default (Lcom/tailoredapps/biometricauth/BiometricAuth$Companion;Landroidx/appcompat/app/AppCompatActivity;ZILjava/lang/Object;)Lcom/tailoredapps/biometricauth/BiometricAuth;
 }
 
 public final class com/tailoredapps/biometricauth/BiometricAuth$Crypto : java/io/Serializable {
 	public fun <init> (Landroid/hardware/biometrics/BiometricPrompt$CryptoObject;)V
+	public fun <init> (Landroidx/biometric/BiometricPrompt$CryptoObject;)V
 	public fun <init> (Landroidx/core/hardware/fingerprint/FingerprintManagerCompat$CryptoObject;)V
 	public fun <init> (Ljava/security/Signature;)V
 	public fun <init> (Ljavax/crypto/Cipher;)V

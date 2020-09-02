@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import com.tailoredapps.biometricauth.delegate.androidxlegacy.AndroidXBiometricAuth
 import com.tailoredapps.biometricauth.delegate.legacy.LegacyBiometricAuth
 import com.tailoredapps.biometricauth.delegate.marshmallow.MarshmallowBiometricAuth
 import com.tailoredapps.biometricauth.delegate.pie.PieBiometricAuth
@@ -36,17 +37,37 @@ interface BiometricAuth {
     companion object {
 
         /**
+         * **Deprecated**: Use the method with the optional Boolean parameter 'useAndroidXBiometricPrompt'.
+         */
+        @Deprecated(
+                message = "This method is solely kept for binary compatibility reasons. Use create() with two parameters instead.",
+                replaceWith = ReplaceWith("BiometricAuth.create(activity, useAndroidXBiometricPrompt = false)")
+        )
+        fun create(activity: AppCompatActivity): BiometricAuth {
+            return create(activity = activity, useAndroidXBiometricPrompt = false)
+        }
+
+        /**
          * Create a [BiometricAuth] instance targeting the devices' version-code (taken from [Build.VERSION.SDK_INT]).
          *
          * @param activity the current activity (as [AppCompatActivity]) which requests the authentication.
+         * @param useAndroidXBiometricPrompt Whether on pre android 10 devices the [AndroidXBiometricAuth]
+         * should be used in favor of the custom implementation [MarshmallowBiometricAuth].
+         * The main difference here is, that the backport is not necessarily shown as
+         * bottom-sheet-dialog, whereas the [MarshmallowBiometricAuth] is always shown as a
+         * bottom-sheet-dialog.
          *
          * @return an instance of [BiometricAuth], which targets the devices' SDK version.
          */
-        fun create(activity: AppCompatActivity): BiometricAuth {
+        fun create(activity: AppCompatActivity, useAndroidXBiometricPrompt: Boolean = false): BiometricAuth {
             val versionCode = Build.VERSION.SDK_INT
             return when {
                 versionCode >= Build.VERSION_CODES.P -> PieBiometricAuth(activity)
-                versionCode >= Build.VERSION_CODES.M -> MarshmallowBiometricAuth(activity)
+                versionCode >= Build.VERSION_CODES.M -> if (useAndroidXBiometricPrompt) {
+                    AndroidXBiometricAuth(activity)
+                } else {
+                    MarshmallowBiometricAuth(activity)
+                }
                 else -> LegacyBiometricAuth()
             }
         }
@@ -190,6 +211,17 @@ interface BiometricAuth {
         @RequiresApi(23)
         @RestrictTo(RestrictTo.Scope.LIBRARY)
         constructor(fingerprintManagerCompatCryptoObject: FingerprintManagerCompat.CryptoObject) : this(
+                fingerprintManagerCompatCryptoObject.signature,
+                fingerprintManagerCompatCryptoObject.cipher,
+                fingerprintManagerCompatCryptoObject.mac
+        )
+
+        /**
+         * Internal constructor to map a [AndroidXBiometricAuth]-response object into this wrapper object
+         */
+        @RequiresApi(23)
+        @RestrictTo(RestrictTo.Scope.LIBRARY)
+        constructor(fingerprintManagerCompatCryptoObject: androidx.biometric.BiometricPrompt.CryptoObject) : this(
                 fingerprintManagerCompatCryptoObject.signature,
                 fingerprintManagerCompatCryptoObject.cipher,
                 fingerprintManagerCompatCryptoObject.mac
