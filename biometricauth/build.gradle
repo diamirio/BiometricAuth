@@ -74,12 +74,29 @@ install {
         pom.withXml {
             def dependenciesNode = asNode().appendNode('dependencies')
 
-            //Add all declared 'api' dependencies to the pom.xml
+            // TODO Test, whether this is automatically done by the bintray-plugin.
+            // The maven-publish plugin, which is used in combination with mavenLocal() seems to
+            // not automatically add the dependencies to the pom file.
+
+            //Add all declared 'api' dependencies to the pom.xml with 'compile'-scope
             configurations.api.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
                 def dependencyNode = dependenciesNode.appendNode('dependency')
                 dependencyNode.appendNode('groupId', dp.group)
                 dependencyNode.appendNode('artifactId', dp.name)
                 dependencyNode.appendNode('version', dp.version)
+                dependencyNode.appendNode('scope', "compile")
+            }
+            //Add all declared 'implementation' dependencies to the pom.xml with 'runtime'-scope
+            configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                // Unfortunately, configurations.implementation includes both (api and
+                // implementation) dependencies, which is why we need to filter here.
+                if (!configurations.api.dependencies.contains(dp)) {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dp.group)
+                    dependencyNode.appendNode('artifactId', dp.name)
+                    dependencyNode.appendNode('version', dp.version)
+                    dependencyNode.appendNode('scope', "runtime")
+                }
             }
         }
     }
