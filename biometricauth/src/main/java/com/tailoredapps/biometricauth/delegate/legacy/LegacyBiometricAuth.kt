@@ -2,8 +2,8 @@ package com.tailoredapps.biometricauth.delegate.legacy
 
 import androidx.annotation.RestrictTo
 import com.tailoredapps.biometricauth.BiometricAuth
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Implementation of [BiometricAuth] for Pre-Marshmallow devices (SDK < 23).

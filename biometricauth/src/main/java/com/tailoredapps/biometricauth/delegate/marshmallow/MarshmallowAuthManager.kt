@@ -7,8 +7,8 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.os.CancellationSignal
 import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Flowable
 
 /**
  * Manager encapsulating the [FingerprintManagerCompat] library in the _style_ of the
@@ -44,7 +44,7 @@ class MarshmallowAuthManager(context: Context) {
      */
     fun authenticate(crypto: BiometricAuth.Crypto?, cancellationSignal: CancellationSignal = CancellationSignal()): Flowable<AuthenticationEvent> {
         return Flowable
-                .create<AuthenticationEvent>({ emitter ->
+                .create({ emitter ->
                     emitter.setCancellable { cancellationSignal.cancel() }
 
                     fingerprintManagerCompat.authenticate(

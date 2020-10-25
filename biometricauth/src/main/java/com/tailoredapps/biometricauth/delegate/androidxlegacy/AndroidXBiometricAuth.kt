@@ -11,13 +11,13 @@ import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
 import com.tailoredapps.biometricauth.BiometricConstants
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
-import io.reactivex.*
+import io.reactivex.rxjava3.core.*
 import java.util.concurrent.Executor
 
 @TargetApi(28)
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal class AndroidXBiometricAuth(
-        private val context: Context,
+        context: Context,
         private val fragmentActivity: FragmentActivity
 ) : BiometricAuth {
 

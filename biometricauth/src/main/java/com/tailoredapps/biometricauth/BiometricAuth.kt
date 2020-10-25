@@ -11,10 +11,10 @@ import com.tailoredapps.biometricauth.delegate.androidxlegacy.AndroidXBiometricA
 import com.tailoredapps.biometricauth.delegate.legacy.LegacyBiometricAuth
 import com.tailoredapps.biometricauth.delegate.marshmallow.MarshmallowBiometricAuth
 import com.tailoredapps.biometricauth.delegate.pie.PieBiometricAuth
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Single
-import io.reactivex.annotations.CheckReturnValue
+import io.reactivex.rxjava3.annotations.CheckReturnValue
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Single
 import java.io.Serializable
 import java.security.Signature
 import javax.crypto.Cipher

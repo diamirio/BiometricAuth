@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tailoredapps.biometricauth.BiometricAuth
 import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.tailoredapps.biometricsample.databinding.ActivityMainBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.io.IOException
 import java.security.*
 import java.security.cert.CertificateException
@@ -36,18 +36,18 @@ class MainActivity : AppCompatActivity() {
         BiometricAuth.create(this, useAndroidXBiometricPrompt = false)
     }
 
-    private val btnAuthenticate: Button by lazy { findViewById<Button>(R.id.btn_authenticate) }
-    private val btnAuthenticateWithCrypto: Button by lazy { findViewById<Button>(R.id.btn_authenticate_with_crypto) }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnAuthenticate.setOnClickListener {
+        binding.btnAuthenticate.setOnClickListener {
             testAuthenticate()
         }
 
-        btnAuthenticateWithCrypto.setOnClickListener {
+        binding.btnAuthenticateWithCrypto.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 Toast.makeText(this, "KeyGenerator only available on >= Marshmallow", Toast.LENGTH_SHORT).show()
             } else {

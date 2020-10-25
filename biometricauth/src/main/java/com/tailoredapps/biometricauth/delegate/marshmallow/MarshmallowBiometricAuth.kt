@@ -4,7 +4,7 @@ import android.annotation.TargetApi
 import androidx.annotation.RestrictTo
 import androidx.fragment.app.FragmentActivity
 import com.tailoredapps.biometricauth.BiometricAuth
-import io.reactivex.*
+import io.reactivex.rxjava3.core.*
 import java.lang.ref.WeakReference
 import java.security.SecureRandom
 

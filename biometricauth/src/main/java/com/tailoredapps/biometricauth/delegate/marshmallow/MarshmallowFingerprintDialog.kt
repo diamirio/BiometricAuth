@@ -29,13 +29,13 @@ import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
 import com.tailoredapps.biometricauth.R
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.MaybeEmitter
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.MaybeEmitter
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -127,14 +127,14 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
         }
 
 
-        cancelButton.setOnClickListener { _ ->
+        cancelButton.setOnClickListener {
             errorResetTimerDisposable?.dispose()
             emitter?.onCancel()
             cancellationSignal.cancel()
             dismissAllowingStateLoss()
         }
 
-        dialog.setOnShowListener { _ ->
+        dialog.setOnShowListener {
             sheetView?.height?.let { height -> behavior?.peekHeight = height }
             authManager.authenticate(arguments?.getSerializable(EXTRA_CRYPTO) as? BiometricAuth.Crypto, cancellationSignal)
                     .observeOn(AndroidSchedulers.mainThread())

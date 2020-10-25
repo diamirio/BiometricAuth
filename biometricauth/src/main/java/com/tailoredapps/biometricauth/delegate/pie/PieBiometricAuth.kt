@@ -2,7 +2,6 @@ package com.tailoredapps.biometricauth.delegate.pie
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.DialogInterface
 import android.hardware.biometrics.BiometricPrompt
 import android.os.CancellationSignal
 import androidx.annotation.RestrictTo
@@ -12,7 +11,7 @@ import com.tailoredapps.biometricauth.BiometricAuthenticationCancelledException
 import com.tailoredapps.biometricauth.BiometricAuthenticationException
 import com.tailoredapps.biometricauth.BiometricConstants
 import com.tailoredapps.biometricauth.delegate.AuthenticationEvent
-import io.reactivex.*
+import io.reactivex.rxjava3.core.*
 import java.util.concurrent.Executor
 
 @TargetApi(28)
@@ -45,7 +44,7 @@ class PieBiometricAuth(private val context: Context) : BiometricAuth {
                         setNegativeButton(
                                 negativeButtonText,
                                 executor,
-                                DialogInterface.OnClickListener { _, _ ->
+                                { _, _ ->
                                     cancellationSignal.cancel()
                                     emitter.onError(BiometricAuthenticationCancelledException())
                                 }

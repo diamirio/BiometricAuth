@@ -6,11 +6,11 @@ apply plugin: 'org.jetbrains.dokka-android'
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         resValue "string", "library_biometricauth_libraryVersion", libraryVersion
     }
@@ -19,20 +19,24 @@ android {
     libraryVariants.all {
         it.generateBuildConfig.enabled = false
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    api 'androidx.appcompat:appcompat:1.1.0'
-
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    api 'androidx.appcompat:appcompat:1.2.0'
 
     implementation 'androidx.biometric:biometric:1.0.1'
 
-    api 'io.reactivex.rxjava2:rxjava:2.2.19'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'io.reactivex.rxjava3:rxjava:3.0.7'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
 
 // publish using: ./gradlew clean biometricauth:build biometricauth:test biometricauth:sourcesJar biometricauth:bintrayUpload
