@@ -1,0 +1,97 @@
+apply plugin: 'maven-publish'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.jetbrains.dokka-android'
+
+Properties publishProperties = new Properties()
+try {
+    publishProperties.load(project.file('publish.properties').newDataInputStream())
+} catch (IOException e) {
+    throw IllegalStateException(e, "publish.properties not found.")
+}
+
+// publish using: ./gradlew clean <module-name>:build <module-name>:test <module-name>:sourcesJar <module-name>:publish
+
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+Properties credentialProperties = new Properties()
+try {
+    credentialProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+} catch (IOException e) {
+    println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
+}
+
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId publishedGroupId
+            artifactId publishProperties.getProperty("publish.artifactId")
+            version libraryVersion
+            artifact(sourcesJar)
+            artifact("$buildDir/outputs/aar/${publishProperties.getProperty("publish.localAarName")}")
+
+            pom {
+                name = libraryName
+                description = publishProperties.getProperty("publish.artifactId")
+                url = siteUrl
+
+                licenses {
+                    license {
+                        name = licenseName
+                        url = licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id = developerId
+                        name = developerName
+                        email = developerEmail
+                    }
+                }
+                scm {
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = siteUrl
+                }
+            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Add all declared 'api' dependencies to the pom.xml with 'compile'-scope
+                configurations.api.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dp.group)
+                    dependencyNode.appendNode('artifactId', dp.name)
+                    dependencyNode.appendNode('version', dp.version)
+                    dependencyNode.appendNode('scope', "compile")
+                }
+                //Add all declared 'implementation' dependencies to the pom.xml with 'runtime'-scope
+                configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    // Unfortunately, configurations.implementation includes both (api and
+                    // implementation) dependencies, which is why we need to filter here.
+                    if (!configurations.api.dependencies.contains(dp)) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dp.group)
+                        dependencyNode.appendNode('artifactId', dp.name)
+                        dependencyNode.appendNode('version', dp.version)
+                        dependencyNode.appendNode('scope', "runtime")
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
+            credentials {
+                username credentialProperties.getProperty("maven.publish.username")
+                password credentialProperties.getProperty("maven.publish.password")
+            }
+        }
+    }
+}

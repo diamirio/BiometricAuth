@@ -4,14 +4,8 @@ apply plugin: 'binary-compatibility-validator'
 
 
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'biometricauth'
-
     publishedGroupId = 'com.tailoredapps'
     libraryName = 'BiometricAuth'
-    artifact = 'biometricauth'
-
-    libraryDescription = 'Backport of Android Pie\'s BiometricPrompt using Kotlin and RxJava'
 
     siteUrl = 'https://github.com/tailoredmedia/BiometricAuth'
     gitUrl = 'https://github.com/tailoredmedia/BiometricAuth.git'

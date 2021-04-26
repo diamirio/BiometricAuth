@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'org.jetbrains.dokka-android'
-apply plugin: 'maven-publish'
+apply from: rootProject.file("publish.gradle")
 
 
 android {
@@ -41,11 +41,6 @@ group = publishedGroupId
 version = libraryVersion
 
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
 task javadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
     outputFormat = 'javadoc'
     outputDirectory = "$buildDir/javadoc"
@@ -64,82 +59,4 @@ dokka {
 artifacts {
     archives javadocJar
     archives sourcesJar
-}
-
-Properties properties = new Properties()
-try {
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-} catch (IOException e) {
-    println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
-}
-
-publishing {
-    publications {
-        bar(MavenPublication) {
-            groupId publishedGroupId
-            artifactId artifact
-            version libraryVersion
-            artifact(sourcesJar)
-            artifact("$buildDir/outputs/aar/biometricauth-release.aar")
-
-            pom {
-                name = libraryName
-                description = libraryDescription
-                url = siteUrl
-
-                licenses {
-                    license {
-                        name = licenseName
-                        url = licenseUrl
-                    }
-                }
-                developers {
-                    developer {
-                        id = developerId
-                        name = developerName
-                        email = developerEmail
-                    }
-                }
-                scm {
-                    connection = gitUrl
-                    developerConnection = gitUrl
-                    url = siteUrl
-                }
-            }
-
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                //Add all declared 'api' dependencies to the pom.xml with 'compile'-scope
-                configurations.api.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', dp.group)
-                    dependencyNode.appendNode('artifactId', dp.name)
-                    dependencyNode.appendNode('version', dp.version)
-                    dependencyNode.appendNode('scope', "compile")
-                }
-                //Add all declared 'implementation' dependencies to the pom.xml with 'runtime'-scope
-                configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
-                    // Unfortunately, configurations.implementation includes both (api and
-                    // implementation) dependencies, which is why we need to filter here.
-                    if (!configurations.api.dependencies.contains(dp)) {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', dp.group)
-                        dependencyNode.appendNode('artifactId', dp.name)
-                        dependencyNode.appendNode('version', dp.version)
-                        dependencyNode.appendNode('scope', "runtime")
-                    }
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
-            credentials {
-                username properties.getProperty("maven.publish.username")
-                password properties.getProperty("maven.publish.password")
-            }
-        }
-    }
 }
