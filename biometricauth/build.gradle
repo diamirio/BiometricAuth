@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'maven-publish'
 
 
 android {
@@ -35,72 +35,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
 
-// publish using: ./gradlew clean biometricauth:build biometricauth:test biometricauth:sourcesJar biometricauth:bintrayUpload
+// publish using: ./gradlew clean biometricauth:build biometricauth:test biometricauth:sourcesJar biometricauth:publish
 
 group = publishedGroupId
 version = libraryVersion
-
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            packaging 'aar'
-            groupId publishedGroupId
-            artifactId artifact
-
-            name libraryName
-            description libraryDescription
-            url siteUrl
-
-            licenses {
-                license {
-                    name licenseName
-                    url licenseUrl
-                }
-            }
-            developers {
-                developer {
-                    id developerId
-                    name developerName
-                    email developerEmail
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
-        }
-
-        pom.withXml {
-            def dependenciesNode = asNode().appendNode('dependencies')
-
-            // TODO Test, whether this is automatically done by the bintray-plugin.
-            // The maven-publish plugin, which is used in combination with mavenLocal() seems to
-            // not automatically add the dependencies to the pom file.
-
-            //Add all declared 'api' dependencies to the pom.xml with 'compile'-scope
-            configurations.api.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
-                def dependencyNode = dependenciesNode.appendNode('dependency')
-                dependencyNode.appendNode('groupId', dp.group)
-                dependencyNode.appendNode('artifactId', dp.name)
-                dependencyNode.appendNode('version', dp.version)
-                dependencyNode.appendNode('scope', "compile")
-            }
-            //Add all declared 'implementation' dependencies to the pom.xml with 'runtime'-scope
-            configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
-                // Unfortunately, configurations.implementation includes both (api and
-                // implementation) dependencies, which is why we need to filter here.
-                if (!configurations.api.dependencies.contains(dp)) {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', dp.group)
-                    dependencyNode.appendNode('artifactId', dp.name)
-                    dependencyNode.appendNode('version', dp.version)
-                    dependencyNode.appendNode('scope', "runtime")
-                }
-            }
-        }
-    }
-}
 
 
 task sourcesJar(type: Jar) {
@@ -135,24 +73,73 @@ try {
     println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
 }
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId publishedGroupId
+            artifactId artifact
+            version libraryVersion
+            artifact(sourcesJar)
+            artifact("$buildDir/outputs/aar/biometricauth-release.aar")
 
-    configurations = ['archives']
-    pkg {
-        repo = bintrayRepo
-        name = bintrayName
-        desc = libraryDescription
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = allLicenses
-        dryRun = false
-        publish = true
-        override = false
-        publicDownloadNumbers = true
-        version {
-            desc = libraryDescription
+            pom {
+                name = libraryName
+                description = libraryDescription
+                url = siteUrl
+
+                licenses {
+                    license {
+                        name = licenseName
+                        url = licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id = developerId
+                        name = developerName
+                        email = developerEmail
+                    }
+                }
+                scm {
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = siteUrl
+                }
+            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Add all declared 'api' dependencies to the pom.xml with 'compile'-scope
+                configurations.api.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dp.group)
+                    dependencyNode.appendNode('artifactId', dp.name)
+                    dependencyNode.appendNode('version', dp.version)
+                    dependencyNode.appendNode('scope', "compile")
+                }
+                //Add all declared 'implementation' dependencies to the pom.xml with 'runtime'-scope
+                configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    // Unfortunately, configurations.implementation includes both (api and
+                    // implementation) dependencies, which is why we need to filter here.
+                    if (!configurations.api.dependencies.contains(dp)) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dp.group)
+                        dependencyNode.appendNode('artifactId', dp.name)
+                        dependencyNode.appendNode('version', dp.version)
+                        dependencyNode.appendNode('scope', "runtime")
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
+            credentials {
+                username properties.getProperty("maven.publish.username")
+                password properties.getProperty("maven.publish.password")
+            }
         }
     }
 }
