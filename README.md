@@ -3,7 +3,7 @@
 [ ![Download](https://api.bintray.com/packages/tailoredmedia/maven/biometricauth/images/download.svg) ](https://bintray.com/tailoredmedia/maven/biometricauth/_latestVersion)
 ![API 15](https://img.shields.io/badge/API-15-yellow.svg)
 
-This library brings the new Android P BiometricPrompt for fingerprint authentication to Android SDK 23, using RxJava2 (and Kotlin).
+This library brings the new Android P BiometricPrompt for fingerprint authentication to Android SDK 23, using RxJava (2 or 3) and Kotlin.
 
 
 | Android 23..27 (>= Marshmallow)  |  Android >= 28 (Pie, Q) |
@@ -15,20 +15,34 @@ This library brings the new Android P BiometricPrompt for fingerprint authentica
 
 To use this library your `minSdkVersion` must be >= 15 (Note that the dialog however will only show starting Android SDK 23).
 
-```gradle
+In your root-level build.gradle file, make sure you include the following maven repository:
+
+```groovy
 allprojects {
     repositories {
-        ...
-        jcenter()
+        maven {
+            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
+            // The content-filter ensures (for your safety) that only artifacts with the given group 
+            // should be fetched from this repository:
+            content { includeGroup 'com.tailoredapps' }
+        }
     }
-}
-
-dependencies {
-    implementation 'com.tailoredapps:biometricauth:1.3.1'
 }
 ```
 
-Starting with version `1.2.0`, this library depends on androidx.
+In your application build.gradle file, include the dependency (for RxJava2):
+```groovy
+dependencies {
+    implementation 'com.tailoredapps:biometricauth-rxjava2:1.3.1'
+}
+```
+
+Or if you are using RxJava3:
+```groovy
+dependencies {
+    implementation 'com.tailoredapps:biometricauth-rxjava3:1.3.1'
+}
+```
 
 
 ## Usage
@@ -102,7 +116,7 @@ On older devices, where Fingerprint Authentication is not supported by native An
 # License
 
 ```
-Copyright 2018 Tailored Media GmbH
+Copyright 2018-2021 Tailored Media GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
