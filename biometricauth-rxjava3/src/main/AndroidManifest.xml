@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tailoredapps.biometricauth">
+
+    <!-- We declare the permissions only for devices running SDK 23 and newer, as before that there
+    is no fingerprint / biometrics API available. See https://github.com/tailoredmedia/BiometricAuth/pull/10 -->
+    <uses-permission-sdk-23
+        android:name="android.permission.USE_FINGERPRINT"
+        android:maxSdkVersion="27" />
+    <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC" />
+
+    <!-- The 'androidx.biometric' SDK declares those permissions, which leads to them being
+    duplicated in the AndroidManifest (as they are different permissions to the merger), but the
+    PlayStore i.e. checks it, and rejects apps that declare duplicated permissions like that.
+    Therefore we remove the "too lenient" permission declaration here (which is for all SDK versions)
+    and just let our uses-permission-sdk-23 declarations (above) do the work. -->
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT"
+        tools:node="remove" />
+
+    <uses-permission
+        android:name="android.permission.USE_BIOMETRIC"
+        tools:node="remove" />
+
+</manifest>

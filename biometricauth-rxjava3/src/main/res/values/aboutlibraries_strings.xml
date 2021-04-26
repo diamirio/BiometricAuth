@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_biometricauth"></string>
+    <!-- Author section -->
+    <string name="library_biometricauth_author">Tailored Apps</string>
+    <string name="library_biometricauth_authorWebsite">tailored-apps.com</string>
+    <!-- Library section -->
+    <string name="library_biometricauth_libraryName">BiometricAuth</string>
+    <string name="library_biometricauth_libraryDescription">Android P\'s BiometricPrompt backported to SDK 23</string>
+    <string name="library_biometricauth_libraryWebsite">http://github.com/tailoredmedia/BiometricAuth</string>
+    <!--<string name="library_biometricauth_libraryVersion">1.0.0</string>--><!-- This is set in the libraries build.gradle file -->
+    <!-- OpenSource section -->
+    <string name="library_biometricauth_isOpenSource">true</string>
+    <string name="library_biometricauth_repositoryLink">http://github.com/tailoredmedia/BiometricAuth</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_biometricauth_classPath">com.tailoredapps.biometricauth</string>
+    <!-- License section -->
+    <string name="library_biometricauth_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+</resources>
