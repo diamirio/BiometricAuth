@@ -97,7 +97,7 @@ class MarshmallowFingerprintDialog : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cancellationSignal = CancellationSignal()
-        authManager = MarshmallowAuthManager(context!!)
+        authManager = MarshmallowAuthManager(requireContext())
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
