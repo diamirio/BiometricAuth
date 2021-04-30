@@ -1,7 +1,7 @@
 apply plugin: 'maven-publish'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: "org.jetbrains.dokka"
 
 Properties publishProperties = new Properties()
 try {
@@ -10,19 +10,30 @@ try {
     throw IllegalStateException(e, "publish.properties not found.")
 }
 
-// publish using: ./gradlew clean <module-name>:build <module-name>:test <module-name>:sourcesJar <module-name>:publish
+// publish using: ./gradlew clean build test sourcesJar dokkaJar publish
+Properties credentialProperties = new Properties()
+try {
+    credentialProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+} catch (IOException e) {
+    println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
+}
 
+tasks.register("dokkaJar", Jar.class) {
+    group = "documentation"
+    archiveClassifier.set("javadoc")
+    classifier "javadoc"
+    dependsOn("dokkaJavadoc")
+    from("$buildDir/dokka/javadoc/")
+}
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from android.sourceSets.main.java.srcDirs
 }
 
-Properties credentialProperties = new Properties()
-try {
-    credentialProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-} catch (IOException e) {
-    println("local.properties not found. This can be ignored, unless you want to publish. " + e.localizedMessage)
+artifacts {
+    archives dokkaJar
+    archives sourcesJar
 }
 
 publishing {
@@ -31,7 +42,9 @@ publishing {
             groupId publishedGroupId
             artifactId publishProperties.getProperty("publish.artifactId")
             version libraryVersion
+
             artifact(sourcesJar)
+            artifact(dokkaJar)
             artifact("$buildDir/outputs/aar/${publishProperties.getProperty("publish.localAarName")}")
 
             pom {

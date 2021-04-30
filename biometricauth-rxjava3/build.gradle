@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'org.jetbrains.dokka-android'
 apply from: rootProject.file("publish.gradle")
 
 
@@ -41,22 +40,14 @@ group = publishedGroupId
 version = libraryVersion
 
 
-task javadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = 'javadoc'
-    outputDirectory = "$buildDir/javadoc"
-}
+tasks.withType(org.jetbrains.dokka.gradle.DokkaTask.class).configureEach {
+    dokkaSourceSets {
+        configureEach {
+            reportUndocumented.set(true)
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.outputDirectory
-}
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/javadoc"
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
+            externalDocumentationLink {
+                url.set(new URL("http://reactivex.io/RxJava/3.x/javadoc/"))
+            }
+        }
+    }
 }
