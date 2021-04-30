@@ -21,7 +21,7 @@ In your root-level build.gradle file, make sure you include the following maven 
 allprojects {
     repositories {
         maven {
-            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
+            url 'https://maven.tailored-apps.com/repository/maven-public/'
             // The content-filter ensures (for your safety) that only artifacts with the given group 
             // should be fetched from this repository:
             content { includeGroup 'com.tailoredapps' }

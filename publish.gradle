@@ -87,7 +87,7 @@ publishing {
     }
     repositories {
         maven {
-            url 'https://maven.tailored-apps.com/repository/maven-biometricauth/'
+            url 'https://maven.tailored-apps.com/repository/maven-public/'
             credentials {
                 username credentialProperties.getProperty("maven.publish.username")
                 password credentialProperties.getProperty("maven.publish.password")
