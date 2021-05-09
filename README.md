@@ -1,6 +1,6 @@
 # BiometricAuth
 
-[ ![Download](https://img.shields.io/badge/version-1.3.1-lightgrey) ](https://maven.tailored-apps.com/#browse/browse:maven-public)
+[ ![Download](https://img.shields.io/badge/version-1.4.0-lightgrey) ](https://maven.tailored-apps.com/#browse/browse:maven-public)
 ![API 15](https://img.shields.io/badge/API-15-yellow.svg)
 
 This library brings the new Android P BiometricPrompt for fingerprint authentication to Android SDK 23, using RxJava (2 or 3) and Kotlin.
@@ -33,14 +33,14 @@ allprojects {
 In your application build.gradle file, include the dependency (for RxJava2):
 ```groovy
 dependencies {
-    implementation 'com.tailoredapps:biometricauth-rxjava2:1.3.1'
+    implementation 'com.tailoredapps:biometricauth-rxjava2:1.4.0'
 }
 ```
 
 Or if you are using RxJava3:
 ```groovy
 dependencies {
-    implementation 'com.tailoredapps:biometricauth-rxjava3:1.3.1'
+    implementation 'com.tailoredapps:biometricauth-rxjava3:1.4.0'
 }
 ```
 
