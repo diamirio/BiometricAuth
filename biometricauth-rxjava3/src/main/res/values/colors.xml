@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="biometric_title_color">@android:color/black</color>
+    <color name="biometric_subtitle_color">@android:color/black</color>
+    <color name="biometric_description_color">@android:color/black</color>
+    <color name="biometric_icon_text_color">#767676</color>
+    <color name="biometric_icon_text_color_error">#d93025</color>
+    <color name="biometric_cancel_button_text_color">#1a73e8</color>
+    <color name="biometric_cancel_button_background">#FFFFFF</color>
+</resources>

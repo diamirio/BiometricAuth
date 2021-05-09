@@ -1,1 +1,1 @@
-include ':app', ':biometricauth'
+include ':app', ':biometricauth-rxjava2', ':biometricauth-rxjava3'

@@ -1,0 +1,172 @@
+public abstract interface class com/tailoredapps/biometricauth/BiometricAuth {
+	public static final field Companion Lcom/tailoredapps/biometricauth/BiometricAuth$Companion;
+	public abstract fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Single;
+	public abstract fun authenticate (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Completable;
+	public abstract fun getHasFingerprintHardware ()Z
+	public abstract fun getHasFingerprintsEnrolled ()Z
+}
+
+public final class com/tailoredapps/biometricauth/BiometricAuth$Companion {
+	public final fun create (Landroidx/appcompat/app/AppCompatActivity;)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public final fun create (Landroidx/fragment/app/FragmentActivity;Z)Lcom/tailoredapps/biometricauth/BiometricAuth;
+	public static synthetic fun create$default (Lcom/tailoredapps/biometricauth/BiometricAuth$Companion;Landroidx/fragment/app/FragmentActivity;ZILjava/lang/Object;)Lcom/tailoredapps/biometricauth/BiometricAuth;
+}
+
+public final class com/tailoredapps/biometricauth/BiometricAuth$Crypto : java/io/Serializable {
+	public fun <init> (Landroid/hardware/biometrics/BiometricPrompt$CryptoObject;)V
+	public fun <init> (Landroidx/biometric/BiometricPrompt$CryptoObject;)V
+	public fun <init> (Landroidx/core/hardware/fingerprint/FingerprintManagerCompat$CryptoObject;)V
+	public fun <init> (Ljava/security/Signature;)V
+	public fun <init> (Ljavax/crypto/Cipher;)V
+	public fun <init> (Ljavax/crypto/Mac;)V
+	public final fun component1 ()Ljava/security/Signature;
+	public final fun component2 ()Ljavax/crypto/Cipher;
+	public final fun component3 ()Ljavax/crypto/Mac;
+	public final fun copy (Ljava/security/Signature;Ljavax/crypto/Cipher;Ljavax/crypto/Mac;)Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;
+	public static synthetic fun copy$default (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/security/Signature;Ljavax/crypto/Cipher;Ljavax/crypto/Mac;ILjava/lang/Object;)Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCipher ()Ljavax/crypto/Cipher;
+	public final fun getMac ()Ljavax/crypto/Mac;
+	public final fun getSignature ()Ljava/security/Signature;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/tailoredapps/biometricauth/BiometricAuth$DefaultImpls {
+	public static synthetic fun authenticate$default (Lcom/tailoredapps/biometricauth/BiometricAuth;Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/Object;)Lio/reactivex/rxjava3/core/Single;
+	public static synthetic fun authenticate$default (Lcom/tailoredapps/biometricauth/BiometricAuth;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/Object;)Lio/reactivex/rxjava3/core/Completable;
+}
+
+public final class com/tailoredapps/biometricauth/BiometricAuthenticationCancelledException : java/lang/RuntimeException {
+	public fun <init> ()V
+}
+
+public final class com/tailoredapps/biometricauth/BiometricAuthenticationException : java/lang/RuntimeException {
+	public fun <init> (ILjava/lang/CharSequence;)V
+	public final fun getErrorMessageId ()I
+	public final fun getErrorString ()Ljava/lang/CharSequence;
+}
+
+public final class com/tailoredapps/biometricauth/BiometricConstants {
+	public static final field INSTANCE Lcom/tailoredapps/biometricauth/BiometricConstants;
+}
+
+public final class com/tailoredapps/biometricauth/BiometricConstants$Error {
+	public static final field CANCELED I
+	public static final field HW_NOT_PRESENT I
+	public static final field HW_UNAVAILABLE I
+	public static final field INSTANCE Lcom/tailoredapps/biometricauth/BiometricConstants$Error;
+	public static final field LOCKOUT I
+	public static final field LOCKOUT_PERMANENT I
+	public static final field NO_BIOMETRICS I
+	public static final field NO_SPACE I
+	public static final field TIMEOUT I
+	public static final field UNABLE_TO_PROCESS I
+	public static final field UNABLE_TO_REMOVE I
+	public static final field USER_CANCELED I
+}
+
+public final class com/tailoredapps/biometricauth/BiometricConstants$Help {
+	public static final field ACQUIRED_GOOD I
+	public static final field ACQUIRED_IMAGER_DIRTY I
+	public static final field ACQUIRED_INSUFFICIENT I
+	public static final field ACQUIRED_PARTIAL I
+	public static final field ACQUIRED_TOO_FAST I
+	public static final field ACQUIRED_TOO_SLOW I
+	public static final field INSTANCE Lcom/tailoredapps/biometricauth/BiometricConstants$Help;
+}
+
+public abstract class com/tailoredapps/biometricauth/delegate/AuthenticationEvent {
+}
+
+public final class com/tailoredapps/biometricauth/delegate/AuthenticationEvent$Error : com/tailoredapps/biometricauth/delegate/AuthenticationEvent {
+	public fun <init> (ILjava/lang/CharSequence;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/CharSequence;
+	public final fun copy (ILjava/lang/CharSequence;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Error;
+	public static synthetic fun copy$default (Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Error;ILjava/lang/CharSequence;ILjava/lang/Object;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/CharSequence;
+	public final fun getMessageId ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/tailoredapps/biometricauth/delegate/AuthenticationEvent$Failed : com/tailoredapps/biometricauth/delegate/AuthenticationEvent {
+	public static final field INSTANCE Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Failed;
+}
+
+public final class com/tailoredapps/biometricauth/delegate/AuthenticationEvent$Help : com/tailoredapps/biometricauth/delegate/AuthenticationEvent {
+	public fun <init> (ILjava/lang/CharSequence;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/CharSequence;
+	public final fun copy (ILjava/lang/CharSequence;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Help;
+	public static synthetic fun copy$default (Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Help;ILjava/lang/CharSequence;ILjava/lang/Object;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Help;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/CharSequence;
+	public final fun getMessageId ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/tailoredapps/biometricauth/delegate/AuthenticationEvent$Success : com/tailoredapps/biometricauth/delegate/AuthenticationEvent {
+	public fun <init> (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;)V
+	public final fun component1 ()Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;
+	public final fun copy (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Success;
+	public static synthetic fun copy$default (Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Success;Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;ILjava/lang/Object;)Lcom/tailoredapps/biometricauth/delegate/AuthenticationEvent$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCrypto ()Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/tailoredapps/biometricauth/delegate/legacy/LegacyBiometricAuth : com/tailoredapps/biometricauth/BiometricAuth {
+	public fun <init> ()V
+	public fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Single;
+	public fun authenticate (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Completable;
+	public fun getHasFingerprintHardware ()Z
+	public fun getHasFingerprintsEnrolled ()Z
+}
+
+public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowAuthManager {
+	public fun <init> (Landroid/content/Context;)V
+	public final fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Landroidx/core/os/CancellationSignal;)Lio/reactivex/rxjava3/core/Flowable;
+	public static synthetic fun authenticate$default (Lcom/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowAuthManager;Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Landroidx/core/os/CancellationSignal;ILjava/lang/Object;)Lio/reactivex/rxjava3/core/Flowable;
+	public final fun getHasFingerprintHardware ()Z
+	public final fun getHasFingerprintsEnrolled ()Z
+}
+
+public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowBiometricAuth : com/tailoredapps/biometricauth/BiometricAuth {
+	public static final field Companion Lcom/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowBiometricAuth$Companion;
+	public fun <init> (Landroidx/fragment/app/FragmentActivity;)V
+	public fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Single;
+	public fun authenticate (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Completable;
+	public fun getHasFingerprintHardware ()Z
+	public fun getHasFingerprintsEnrolled ()Z
+}
+
+public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowBiometricAuth$Companion {
+}
+
+public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowFingerprintDialog : com/google/android/material/bottomsheet/BottomSheetDialogFragment {
+	public static final field Companion Lcom/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowFingerprintDialog$Companion;
+	public fun <init> ()V
+	public fun onCancel (Landroid/content/DialogInterface;)V
+	public fun onCreate (Landroid/os/Bundle;)V
+	public fun onCreateDialog (Landroid/os/Bundle;)Landroid/app/Dialog;
+	public fun onDestroy ()V
+	public fun onDismiss (Landroid/content/DialogInterface;)V
+}
+
+public final class com/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowFingerprintDialog$Companion {
+	public final fun create (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;I)Lcom/tailoredapps/biometricauth/delegate/marshmallow/MarshmallowFingerprintDialog;
+}
+
+public final class com/tailoredapps/biometricauth/delegate/pie/PieBiometricAuth : com/tailoredapps/biometricauth/BiometricAuth {
+	public fun <init> (Landroid/content/Context;)V
+	public fun authenticate (Lcom/tailoredapps/biometricauth/BiometricAuth$Crypto;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Single;
+	public fun authenticate (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/core/Completable;
+	public fun getHasFingerprintHardware ()Z
+	public fun getHasFingerprintsEnrolled ()Z
+}
+

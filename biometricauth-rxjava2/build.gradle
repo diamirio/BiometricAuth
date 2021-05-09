@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+apply from: rootProject.file("publish.gradle")
+
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 29
+
+        resValue "string", "library_biometricauth_libraryVersion", libraryVersion
+    }
+
+    // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    api 'androidx.appcompat:appcompat:1.2.0'
+
+
+    implementation 'androidx.biometric:biometric:1.1.0'
+
+    api 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+}
+
+// publish using: ./gradlew clean biometricauth:build biometricauth:test biometricauth:sourcesJar biometricauth:publish
+
+group = publishedGroupId
+version = libraryVersion
+
+
+tasks.withType(org.jetbrains.dokka.gradle.DokkaTask.class).configureEach {
+    dokkaSourceSets {
+        configureEach {
+            reportUndocumented.set(true)
+
+            externalDocumentationLink {
+                url.set(new URL("http://reactivex.io/RxJava/2.x/javadoc/"))
+            }
+        }
+    }
+}
