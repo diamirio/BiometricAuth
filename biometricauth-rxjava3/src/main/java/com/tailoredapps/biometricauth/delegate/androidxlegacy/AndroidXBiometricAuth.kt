@@ -16,7 +16,7 @@ import java.util.concurrent.Executor
 
 @TargetApi(28)
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal class AndroidXBiometricAuth(
+class AndroidXBiometricAuth(
         private val context: Context,
         private val fragmentActivity: FragmentActivity
 ) : BiometricAuth {
